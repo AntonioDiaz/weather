@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list_item_forecast_textview"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center_vertical"
+          android:minHeight="?android:attr/listPreferredItemHeight"
+          android:layout_margin="50dp"
+          android:text="@string/prueba"
+          android:layout_marginBottom="50dp"
+          android:layout_marginEnd="50dp"
+          android:layout_marginLeft="50dp"
+          android:layout_marginRight="50dp"
+          android:layout_marginStart="50dp"
+          android:layout_marginTop="50dp"
+          android:textStyle="bold"
+          android:textSize="18sp"
+          android:padding="10dp">
+</TextView>
