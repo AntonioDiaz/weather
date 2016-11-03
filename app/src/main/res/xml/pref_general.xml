@@ -17,5 +17,4 @@
         android:entries="@array/pref_units_entries"
         android:entryValues="@array/pref_units_values"
         android:defaultValue="@string/pref_pref_units_default" />
-
 </PreferenceScreen>
