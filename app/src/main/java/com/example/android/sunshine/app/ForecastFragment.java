@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -52,8 +53,21 @@ public class ForecastFragment extends Fragment {
 		if (itemId == R.id.action_refresh) {
 			updateWeather();
 			return true;
+		} else if (itemId == R.id.action_location) {
+			Uri gmmIntentUri = Uri.parse("geo:0,0?q=leganes");
+			Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+			if (intent.resolveActivity(getActivity().getPackageManager())!=null) {
+				startActivity(intent);
+			} else {
+				Toast.makeText(getActivity(), "ELSE", Toast.LENGTH_SHORT).show();
+			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void updateWeather() {
