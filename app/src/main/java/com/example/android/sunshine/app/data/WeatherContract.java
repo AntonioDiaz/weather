@@ -23,8 +23,7 @@ import android.text.format.Time;
  */
 public class WeatherContract {
 
-    // To make it easy to query for the exact date, we normalize all dates that go into
-    // the database to the start of the the Julian day at UTC.
+    // To make it easy to query for the exact date, we normalize all dates that go into the database to the start of the the Julian day at UTC.
     public static long normalizeDate(long startDate) {
         // normalize the start date to the beginning of the (UTC) day
         Time time = new Time();
@@ -35,8 +34,7 @@ public class WeatherContract {
 
     /*
         Inner class that defines the table contents of the location table
-        Students: This is where you will add the strings.  (Similar to what has been
-        done for WeatherEntry)
+        Students: This is where you will add the strings.  (Similar to what has been done for WeatherEntry)
      */
     public static final class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
