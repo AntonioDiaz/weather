@@ -1,0 +1,15 @@
+.h3_style {
+	width: 90%;
+	margin-bottom: 0px;
+	font-weight: bold;
+}
+
+.hr_style {
+    display: block;
+    height: 10px;
+    border: 0;
+    border-top: 2px solid #000;
+    margin: 1em 0;
+    padding: 0; 
+	margin-top: 5px;
+}
