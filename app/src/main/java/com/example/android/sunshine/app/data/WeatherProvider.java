@@ -103,8 +103,6 @@ public class WeatherProvider extends ContentProvider {
 	}
 
 	/*
-		Students:
-		Here is where you need to create the UriMatcher.
 		This UriMatcher will match each URI to the WEATHER, WEATHER_WITH_LOCATION, WEATHER_WITH_LOCATION_AND_DATE, and
 		LOCATION integer constants defined above.
 		You can test this by uncommenting the testUriMatcher test within TestUriMatcher.
@@ -126,7 +124,6 @@ public class WeatherProvider extends ContentProvider {
 	}
 
 	/*
-		Students:
 		Here's where you'll code the getType function that uses the UriMatcher.
 		You can test this by uncommenting testGetType in TestProvider.
 	 */

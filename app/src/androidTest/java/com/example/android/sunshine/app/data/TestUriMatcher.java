@@ -43,19 +43,19 @@ public class TestUriMatcher extends AndroidTestCase {
         ready to test your UriMatcher.
      */
     public void testUriMatcher() {
-		UriMatcher testMatcher = WeatherProvider.buildUriMatcher();
-
-        assertEquals("Error: The WEATHER URI was matched incorrectly.",
-                testMatcher.match(TEST_WEATHER_DIR), WeatherProvider.WEATHER);
+		UriMatcher uriMatcher = WeatherProvider.buildUriMatcher();
+		int match = uriMatcher.match(TEST_WEATHER_DIR);
+		assertEquals("Error: The WEATHER URI was matched incorrectly.",
+				uriMatcher.match(TEST_WEATHER_DIR), WeatherProvider.WEATHER);
 
         assertEquals("Error: The WEATHER WITH LOCATION URI was matched incorrectly.",
-                testMatcher.match(TEST_WEATHER_WITH_LOCATION_DIR), WeatherProvider.WEATHER_WITH_LOCATION);
+				uriMatcher.match(TEST_WEATHER_WITH_LOCATION_DIR), WeatherProvider.WEATHER_WITH_LOCATION);
 
 		assertEquals("Error: The WEATHER WITH LOCATION AND DATE URI was matched incorrectly.",
-                testMatcher.match(TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR), WeatherProvider.WEATHER_WITH_LOCATION_AND_DATE);
+                uriMatcher.match(TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR), WeatherProvider.WEATHER_WITH_LOCATION_AND_DATE);
 
 
         assertEquals("Error: The LOCATION URI was matched incorrectly.",
-                testMatcher.match(TEST_LOCATION_DIR), WeatherProvider.LOCATION);
+                uriMatcher.match(TEST_LOCATION_DIR), WeatherProvider.LOCATION);
     }
 }

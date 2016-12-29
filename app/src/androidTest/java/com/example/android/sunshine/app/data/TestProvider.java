@@ -239,6 +239,7 @@ public class TestProvider extends AndroidTestCase {
 		Cursor cursorAux = db.query(WeatherContract.LocationEntry.TABLE_NAME, null, whereClause, whereArgs, null, null, null);
 		assertEquals("Testing insert...", 1, cursorAux.getCount());
 		TestUtilities.validateCursor("testUpdateLocation.  Error validating location entry update.", cursorAux, values);
+		cursorAux.close();
 		db.close();
 	}
 
