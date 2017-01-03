@@ -2,29 +2,44 @@ package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.android.sunshine.app.data.WeatherContract;
 
-/** A placeholder fragment containing a simple view. */
-public class ForecastFragment extends Fragment {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+	public static final int LOADER_ID = 0;
 	private ArrayAdapter<String> forecastAdapter;
+	private ForecastAdapter mForecastAdapter;
 
-	public ForecastFragment() { }
+	public ForecastFragment() {
+	}
+
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		getLoaderManager().initLoader(LOADER_ID, null, this);
+		super.onActivityCreated(savedInstanceState);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +61,7 @@ public class ForecastFragment extends Fragment {
 		} else if (itemId == R.id.action_location) {
 			Uri gmmIntentUri = Uri.parse("geo:0,0?q=leganes");
 			Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-			if (intent.resolveActivity(getActivity().getPackageManager())!=null) {
+			if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 				startActivity(intent);
 			} else {
 				Toast.makeText(getActivity(), "ELSE", Toast.LENGTH_SHORT).show();
@@ -61,10 +76,10 @@ public class ForecastFragment extends Fragment {
 	}
 
 	private void updateWeather() {
-		FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(this.getContext(), forecastAdapter);
+		FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(this.getContext());
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		String defaultLocation = getString(R.string.pref_location_default);
-		String location = sharedPref.getString(getString(R.string.pref_location_key), defaultLocation );
+		String location = sharedPref.getString(getString(R.string.pref_location_key), defaultLocation);
 		String defaultUnits = getString(R.string.pref_pref_units_default);
 		String units = sharedPref.getString(getString(R.string.pref_units_key), defaultUnits);
 		fetchWeatherTask.execute(location, units);
@@ -78,23 +93,31 @@ public class ForecastFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		forecastAdapter = new ArrayAdapter<String>(
-				getActivity(),
-				R.layout.list_item_forecast,
-				R.id.list_item_forecast_textview,
-				new ArrayList<String>());
+		mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-		listView.setAdapter(forecastAdapter);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				String forecast = forecastAdapter.getItem(position);
-				Intent intent = new Intent (getActivity(), DetailActivity.class);
-				intent.putExtra(Intent.EXTRA_TEXT, forecast);
-				startActivity(intent);
-			}
-		});
+		listView.setAdapter(mForecastAdapter);
 		return rootView;
 	}
+
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		String locationSetting = Utility.getPreferredLocation(getActivity());
+		String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
+		return new CursorLoader(getActivity(), WeatherContract.WeatherEntry.CONTENT_URI, null, null, null, sortOrder);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		mForecastAdapter.swapCursor(data);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		mForecastAdapter.swapCursor(null);
+	}
+
+
 }
