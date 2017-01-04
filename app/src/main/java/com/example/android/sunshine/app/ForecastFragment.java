@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -94,6 +95,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 		forecastCursorAdapter = new ForecastCursorAdapter(getActivity(), null, 0);
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView adapterView, View view, int position, long l) {
+				// CursorAdapter returns a cursor at the correct position for getItem(), or null if it cannot seek to that position.
+				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+				if (cursor != null) {
+					String locationSetting = Utility.getPreferredLocation(getActivity());
+					Uri uri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
+					Intent intent = new Intent(getActivity(), DetailActivity.class);
+					intent.setData(uri);
+					startActivity(intent);
+				}
+			}
+		});
 		listView.setAdapter(forecastCursorAdapter);
 		return rootView;
 	}
