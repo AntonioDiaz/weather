@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="stylesheet" href="styles.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Udacity Android Course</title>
+  </head>
+  <body>
+	<div class="container">
+		<h1>Weather App</h1>
+		<br>
+		<a href="https://www.udacity.com/course/new-android-fundamentals--ud851">https://www.udacity.com/course/new-android-fundamentals--ud851</a>
+		<br>
+		<h4>Points to remember</h4>
+		<div class="list-group" style="width:50%">
+		  <a href="#content_providers_client" class="list-group-item">Content Provider Client</a>
+		  <a href="#cursor_adapter" class="list-group-item">Cursor Adapter</a>
+		  <a href="#storing_data" class="list-group-item">Storing Data</a>		  
+		  <a href="#content_provider" class="list-group-item">Content Provider</a>		  
+		  <a href="#cursor_loader" class="list-group-item">CursorLoader</a>		 
+		</div>
+		<hr>
+		<h3 id="content_providers_client" class="h3_style">Content Provider Client</h3>
+		<hr class="hr_style">
+		<a href="https://classroom.udacity.com/courses/ud258/lessons/3372188753/concepts/34096686680923">Udacity Course</a>
+		<br>
+		<a href="https://github.com/udacity/DictionaryProviderExample">Github Source</a>
+		<br>
+		<img src="images/content_provider.png" width="40%">
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>App screenshot:</h4></li>
+		</ul>
+		<img src="images/screenshot.png" width="20%">
+		<br>
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>AndroidManifest.xml</h4></li>
+		</ul>		
+			<code>&lt;uses-permission android:name=&quot;android.permission.READ_USER_DICTIONARY&quot;/&gt;</code>
+		<br>
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>MainActivity.java</h4></li>
+		</ul>		
+		<script src="https://gist.github.com/AntonioDiaz/a4a093c12ad6968d5ef2baebdaa5270b.js"></script>
+		<hr>
+		<br>
+
+		<!-- section: cursor adapter. -->
+		<h3 id="cursor_adapter" class="h3_style">Cursor Adapter</h3>
+		<hr class="hr_style">
+		<a href="https://classroom.udacity.com/courses/ud258/lessons/3372188753/concepts/34096686680923">Udacity Course</a>
+		<br>
+		<a href="https://github.com/udacity/DictionaryProviderExample">Github Source</a>
+		<br>
+		<br>
+		<img src="images/simple_cursor_adapter.jpg" width="40%">
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>App screenshot:</h4></li>
+		</ul>
+		<img src="images/screenshot_cursoradapter.png" width="20%">
+		<br>
+		<br>
+		<ul style="list-style-type:disc">
+			<li>
+				<h4>SimpleCursorAdapter example</h4>
+			</li>
+		</ul>				
+		<script src="https://gist.github.com/AntonioDiaz/b56c3fe1fb5a6c0b87b736934282c951.js"></script>
+		<br><br>
+		<ul style="list-style-type:disc">
+			<li>
+				<h4>Developing your own CursorAdapter</h4>
+				Extends CursorAdapter: implements constructor with context, cursor and flags as parameters.
+				<br>
+				Implements methods: newView, bindView.
+			</li>
+		</ul>
+		<script src="https://gist.github.com/AntonioDiaz/3564eb566eb9a37a8d5fb0a514993314.js"></script>	
+		<br><br>
+
+		<!-- section: storing data. -->
+		<h3 id="storing_data" class="h3_style">Storing Data</h3>
+		<hr class="hr_style">		
+		<ul style="list-style-type:disc">
+			<li><h4>WeatherContract.java</h4></li>
+			Defines table and column names for the weather database.
+			<br><br>
+			<script src="https://gist.github.com/AntonioDiaz/a03ec313fb98549ece66e3e53cee7a8a.js"></script>
+		</ul>
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>WeatherDbHelper.java</h4></li>
+			 Manages a local database for weather data.
+			<br><br>
+			<script src="https://gist.github.com/AntonioDiaz/35683c1b501b8e5b3a5964c01ad37ffc.js"></script>
+		</ul>
+		<br>
+		<ul style="list-style-type:disc">
+			<li><h4>Testing Android DB</h4></li>
+			Test example
+			<br>
+			<script src="https://gist.github.com/AntonioDiaz/48b28d3d6f4a976f7e08e8d33b08fe83.js"></script>
+		</ul>
+		<hr>
+		<br><br>		
+		<h3 id="content_provider" class="h3_style">Content Provider</h3>
+		<hr class="hr_style">		
+		<img src="images/content_providers_steps.jpg" width="80%">
+		<br><br>
+		<ul style="list-style-type:disc">
+			<li><h4>URIs types</h4></li>
+			Diferent types of request the content provider can receive
+			<script src="https://gist.github.com/AntonioDiaz/a102f3a7314c1e02733d34af0ee84c0d.js"></script>
+		</ul>
+		<br><br>
+		<ul style="list-style-type:disc">
+			<li><h4>URI matcher</h4></li>			
+			<script src="https://gist.github.com/AntonioDiaz/2ee841e42a1708038f034b7a92564348.js"></script>
+		</ul>
+		<br><br>
+		<ul style="list-style-type:disc">
+			<li><h4>Query Content Provider Implementation</h4></li>			
+			<script src="https://gist.github.com/AntonioDiaz/8aba53a1f6dd4b9a93432f6071059d06.js"></script>
+		</ul>
+		<hr>
+		<h3 id="cursor_loader" class="h3_style">CursorLoader</h3>
+		<hr class="hr_style">
+		<a href="https://developer.android.com/guide/components/loaders.html">https://developer.android.com/guide/components/loaders.html</a>
+		<ul style="list-style-type:disc">
+			<li><h4>3 steps: </h4></li>			
+			<ul style="list-style-type:decimal">
+				<li>Create Loader ID</li>		
+				<li>Fill-in Loader Callbacks, <b>LoaderManager.LoaderCallbacks</b></li>			
+				<li>Init loader with LoaderManager</li>			
+			</ul>
+			<br>
+			<script src="https://gist.github.com/AntonioDiaz/c48399619719fccfee982774f66a8650.js"></script>
+		</ul>
+		<hr>
+		<br>
+	</div>
+  </body>
+</html>  
