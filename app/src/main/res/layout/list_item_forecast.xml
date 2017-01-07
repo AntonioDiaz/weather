@@ -1,19 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/list_item_forecast_textview"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:gravity="center_vertical"
-          android:minHeight="?android:attr/listPreferredItemHeight"
-          android:layout_margin="50dp"
-          android:text="@string/prueba"
-          android:layout_marginBottom="50dp"
-          android:layout_marginEnd="50dp"
-          android:layout_marginLeft="50dp"
-          android:layout_marginRight="50dp"
-          android:layout_marginStart="50dp"
-          android:layout_marginTop="50dp"
-          android:textStyle="bold"
-          android:textSize="18sp"
-          android:padding="10dp">
-</TextView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/list_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:src="@drawable/ic_launcher"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/list_item_date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/caraanchoa"/>
+
+        <TextView
+            android:id="@+id/list_item_forecast_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/caraanchoa"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_item_high_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/list_item_low_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"/>
+    </LinearLayout>
+
+</LinearLayout>
+

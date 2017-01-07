@@ -16,14 +16,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
+	private static final String FORECASTFRAGMENT_TAG = "FORECASTFRAGMENT_TAG";
+	public String mLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		mLocation = sharedPreferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
 		if (savedInstanceState == null) {
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.add(R.id.container, new ForecastFragment());
+			fragmentTransaction.add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG);
 			fragmentTransaction.commit();
 		}
 	}
@@ -48,21 +52,28 @@ public class MainActivity extends AppCompatActivity {
 		}
 		if (id == R.id.action_settings) {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-			String location = sharedPreferences.getString(
-				getString(R.string.pref_location_key),
-				getString(R.string.pref_location_default)
-			);
-			Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q", location).build();
+			mLocation = sharedPreferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+			Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q", mLocation).build();
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(geoLocation);
-			if (intent.resolveActivity(getPackageManager())!=null) {
+			if (intent.resolveActivity(getPackageManager()) != null) {
 				startActivity(intent);
 			} else {
-				Log.d(LOG_TAG, "Couln't call " + location + "no intent defined.");
+				Log.d(LOG_TAG, "Couln't call " + mLocation + "no intent defined.");
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mLocation!=null && !mLocation.equals(Utility.getPreferredLocation(this))) {
+			ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+			if (forecastFragment!=null) {
+				forecastFragment.onLocationChanged();
+			}
+			mLocation = Utility.getPreferredLocation(this);
+		}
+	}
 }

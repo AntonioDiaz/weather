@@ -85,12 +85,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		updateWeather();
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		forecastCursorAdapter = new ForecastCursorAdapter(getActivity(), null, 0);
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
@@ -98,7 +92,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView adapterView, View view, int position, long l) {
-				// CursorAdapter returns a cursor at the correct position for getItem(), or null if it cannot seek to that position.
+				/* CursorAdapter returns a cursor at the correct position for getItem(), or null if it cannot seek to that position. */
 				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 				if (cursor != null) {
 					String locationSetting = Utility.getPreferredLocation(getActivity());
@@ -111,6 +105,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 		});
 		listView.setAdapter(forecastCursorAdapter);
 		return rootView;
+	}
+
+	public void onLocationChanged(){
+		this.updateWeather();
+		getLoaderManager().restartLoader(LOADER_ID, null, this);
 	}
 
 	@Override
@@ -131,7 +130,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 		forecastCursorAdapter.swapCursor(null);
 	}
 
-
 	private static final String[] FORECAST_COLUMNS = {
 			// In this case the id needs to be fully qualified with a table name, since
 			// the content provider joins the location & weather tables in the background
@@ -150,8 +148,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 			WeatherContract.LocationEntry.COLUMN_COORD_LONG
 	};
 
-	// These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-	// must change.
+	/* These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these must change. */
 	static final int COL_WEATHER_ID = 0;
 	static final int COL_WEATHER_DATE = 1;
 	static final int COL_WEATHER_DESC = 2;
