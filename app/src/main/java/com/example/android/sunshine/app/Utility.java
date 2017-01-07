@@ -27,22 +27,22 @@ import java.util.Date;
 public class Utility {
 	public static String getPreferredLocation(Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getString(context.getString(R.string.pref_location_key),	context.getString(R.string.pref_location_default));
+		return prefs.getString(context.getString(R.string.pref_location_key), context.getString(R.string.pref_location_default));
 	}
 
 	public static boolean isMetric(Context context) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getString(context.getString(R.string.pref_units_key),context.getString(R.string.pref_units_metric)).equals(context.getString(R.string.pref_units_metric));
+		return prefs.getString(context.getString(R.string.pref_units_key), context.getString(R.string.pref_units_metric)).equals(context.getString(R.string.pref_units_metric));
 	}
 
-	static String formatTemperature(double temperature, boolean isMetric) {
+	static String formatTemperature(Context context, double temperature, boolean isMetric) {
 		double temp;
-		if ( !isMetric ) {
-			temp = 9*temperature/5+32;
+		if (!isMetric) {
+			temp = 9 * temperature / 5 + 32;
 		} else {
 			temp = temperature;
 		}
-		return String.format("%.0f", temp);
+		return context.getString(R.string.format_temperature, temp);
 	}
 
 	static String formatDate(long dateInMillis) {
@@ -58,7 +58,7 @@ public class Utility {
 	 * Helper method to convert the database representation of the date into something to display
 	 * to users.  As classy and polished a user experience as "20140102" is, we can do better.
 	 *
-	 * @param context Context to use for resource localization
+	 * @param context      Context to use for resource localization
 	 * @param dateInMillis The date in milliseconds
 	 * @return a user-friendly representation of the date.
 	 */
@@ -84,7 +84,7 @@ public class Utility {
 					formatId),
 					today,
 					getFormattedMonthDay(context, dateInMillis));
-		} else if ( julianDay < currentJulianDay + 7 ) {
+		} else if (julianDay < currentJulianDay + 7) {
 			// If the input date is less than a week in the future, just return the day name.
 			return getDayName(context, dateInMillis);
 		} else {
@@ -98,7 +98,7 @@ public class Utility {
 	 * Given a day, returns just the name to use for that day.
 	 * E.g "today", "tomorrow", "wednesday".
 	 *
-	 * @param context Context to use for resource localization
+	 * @param context      Context to use for resource localization
 	 * @param dateInMillis The date in milliseconds
 	 * @return
 	 */
@@ -112,7 +112,7 @@ public class Utility {
 		int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), t.gmtoff);
 		if (julianDay == currentJulianDay) {
 			return context.getString(R.string.today);
-		} else if ( julianDay == currentJulianDay +1 ) {
+		} else if (julianDay == currentJulianDay + 1) {
 			return context.getString(R.string.tomorrow);
 		} else {
 			Time time = new Time();
@@ -125,12 +125,13 @@ public class Utility {
 
 	/**
 	 * Converts db date format to the format "Month day", e.g "June 24".
-	 * @param context Context to use for resource localization
+	 *
+	 * @param context      Context to use for resource localization
 	 * @param dateInMillis The db formatted date string, expected to be of the form specified
-	 *                in Utility.DATE_FORMAT
+	 *                     in Utility.DATE_FORMAT
 	 * @return The day in the form of a string formatted "December 6"
 	 */
-	public static String getFormattedMonthDay(Context context, long dateInMillis ) {
+	public static String getFormattedMonthDay(Context context, long dateInMillis) {
 		Time time = new Time();
 		time.setToNow();
 		SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
