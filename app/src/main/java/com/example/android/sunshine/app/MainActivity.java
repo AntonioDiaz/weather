@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 public class MainActivity extends AppCompatActivity {
-
 
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 	private static final String FORECASTFRAGMENT_TAG = "FORECASTFRAGMENT_TAG";
