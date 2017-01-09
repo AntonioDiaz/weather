@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -31,6 +32,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 	private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 	public static final int LOADER_ID = 0;
 	private ForecastCursorAdapter forecastCursorAdapter;
+	private Callback mCallback;
 
 	public ForecastFragment() {
 		Log.d(LOG_TAG, "forecastFragment constructor");
@@ -48,6 +50,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 		Log.d(LOG_TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		try {
+			/* to be sure that the container activity has implemented the callback interface. Otherwise throws an exception. */
+			Log.d(LOG_TAG, "before casting");
+			mCallback = (Callback) getActivity();
+		} catch (ClassCastException e) {
+			throw new ClassCastException(getActivity().toString() + " must implement OnHeadlineSelectedListener");
+		}
 	}
 
 	@Override
@@ -101,10 +115,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 				if (cursor != null) {
 					String locationSetting = Utility.getPreferredLocation(getActivity());
-					Uri uri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
-					Intent intent = new Intent(getActivity(), DetailActivity.class);
-					intent.setData(uri);
-					startActivity(intent);
+					Uri uriDate = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
+					((Callback)getActivity()).onItemSelected(uriDate);
 				}
 			}
 		});
@@ -163,5 +175,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 	static final int COL_WEATHER_CONDITION_ID = 6;
 	static final int COL_COORD_LAT = 7;
 	static final int COL_COORD_LONG = 8;
+
+	/**
+	 * A callback interface that all activities containing this fragment must implement.
+	 * This mechanism allows activities to be notified of item selections.
+	 */
+	public interface Callback {
+		/* DetailFragmentCallback for when an item has been selected. */
+		public void onItemSelected (Uri uri);
+	}
 
 }
