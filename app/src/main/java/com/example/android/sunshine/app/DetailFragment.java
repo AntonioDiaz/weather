@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -40,7 +41,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 			WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
 			WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
 			WeatherContract.WeatherEntry.COLUMN_DEGREES,
-			WeatherContract.WeatherEntry.COLUMN_PRESSURE
+			WeatherContract.WeatherEntry.COLUMN_PRESSURE,
+			WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
 	};
 
 	private static final int COL_WEATHER_ID = 0;
@@ -52,6 +54,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 	private static final int COL_WEATHER_WIND_SPEED = 6;
 	private static final int COL_WEATHER_DEGREES = 7;
 	private static final int COL_WEATHER_PRESSURE = 8;
+	private static final int COL_WEATHER_CONDITION_ID = 9;
 	private TextView mTextViewDate;
 	private TextView mTextViewHigh;
 	private TextView mTextViewLow;
@@ -59,6 +62,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 	private TextView mTextViewWindSpeed;
 	private TextView mTextViewPressure;
 	private TextView mTestViewForecast;
+	private ImageView mImageView;
 
 	public DetailFragment() {
 		setHasOptionsMenu(true);
@@ -89,7 +93,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 		mTextViewWindSpeed = (TextView) rootView.findViewById(R.id.list_item_wind_speed_textview);
 		mTextViewPressure = (TextView) rootView.findViewById(R.id.list_item_pressure_textview);
 		mTestViewForecast = (TextView) rootView.findViewById(R.id.list_item_forecast_textview);
-
+		mImageView = (ImageView) rootView.findViewById(R.id.list_item_icon);
 		return rootView;
 	}
 
@@ -123,6 +127,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 		Log.v(LOG_TAG, "In onLoadFinished");
 		if (data.moveToFirst()) {
 			boolean isMetric = Utility.isMetric(getActivity());
+
+			/* setting icon */
+			mImageView.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_CONDITION_ID)));
 
 			/* setting date */
 			String dateString = Utility.getFriendlyDayString(getContext(), data.getLong(COL_WEATHER_DATE));

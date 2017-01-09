@@ -23,9 +23,7 @@ import android.widget.Toast;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+/** A placeholder fragment containing a simple view. */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	public static final int LOADER_ID = 0;

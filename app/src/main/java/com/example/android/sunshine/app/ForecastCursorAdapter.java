@@ -15,39 +15,13 @@ import android.widget.TextView;
  */
 public class ForecastCursorAdapter extends CursorAdapter {
 
+	private static final String LOG_TAG = ForecastCursorAdapter.class.getSimpleName();
 	private final int VIEW_TYPE_TODAY = 0;
 	private final int VIEW_TYPE_FUTURE_DAY = 1;
 
 	public ForecastCursorAdapter(Context context, Cursor cursor, int flags) {
 		super(context, cursor, flags);
 	}
-
-/*
-	*/
-/* Prepare the weather high/lows for presentation. *//*
-
-	private String formatHighLows(double high, double low) {
-		boolean isMetric = Utility.isMetric(mContext);
-		String highLowStr = Utility.formatTemperature(context, high, isMetric) + "/" + Utility.formatTemperature(low, isMetric);
-		return highLowStr;
-	}
-
-	*/
-/**
-	 * This is ported from FetchWeatherTask --- but now we go straight from the cursor to the string.
-	 *//*
-
-	private String convertCursorRowToUXFormat(Cursor cursor) {
-		// get row indices for our cursor
-		double maxTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-		double minTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-		String highAndLow = formatHighLows(maxTemp, minTemp);
-		String uxFormat = Utility.formatDate(cursor.getLong(ForecastFragment.COL_WEATHER_DATE));
-		uxFormat += " - " + cursor.getString(ForecastFragment.COL_WEATHER_DESC);
-		uxFormat += " - " + highAndLow;
-		return uxFormat;
-	}
-*/
 
 	/* Remember that these views are reused as needed. */
 	@Override
@@ -69,10 +43,18 @@ public class ForecastCursorAdapter extends CursorAdapter {
 
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-		/* Read weather icon ID from cursor */
-		int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+		/*int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);*/
 
-		viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
+		/* Read weather icon ID from cursor */
+		int weatherConditionId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
+		int itemViewType = getItemViewType(cursor.getPosition());
+		int iconId;
+		if (VIEW_TYPE_TODAY == itemViewType){
+			iconId = Utility.getArtResourceForWeatherCondition(weatherConditionId);
+		} else {
+			iconId = Utility.getIconResourceForWeatherCondition(weatherConditionId);
+		}
+		viewHolder.iconView.setImageResource(iconId);
 
 		String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
 		viewHolder.descriptionView.setText(description);
