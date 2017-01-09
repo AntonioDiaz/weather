@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,20 +27,25 @@ import com.example.android.sunshine.app.data.WeatherContract;
 /** A placeholder fragment containing a simple view. */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+
+	private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 	public static final int LOADER_ID = 0;
 	private ForecastCursorAdapter forecastCursorAdapter;
 
 	public ForecastFragment() {
+		Log.d(LOG_TAG, "forecastFragment constructor");
 	}
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		Log.d(LOG_TAG, "onActivityCreate");
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(LOG_TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
@@ -84,6 +90,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d(LOG_TAG, "onCreateView");
 		forecastCursorAdapter = new ForecastCursorAdapter(getActivity(), null, 0);
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 		ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);

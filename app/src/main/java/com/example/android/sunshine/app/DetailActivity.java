@@ -24,8 +24,6 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import static com.example.android.sunshine.app.R.id.container;
-
 public class DetailActivity extends AppCompatActivity {
 
 	private static final String LOG_TAG = DetailActivity.class.getName();
@@ -38,7 +36,7 @@ public class DetailActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_detail);
 		if (savedInstanceState == null) {
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.add(container, new DetailFragment());
+			fragmentTransaction.add(R.id.weather_detail_container, new DetailFragment());
 			fragmentTransaction.commit();
 		}
 	}

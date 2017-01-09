@@ -2,6 +2,7 @@ package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -115,11 +116,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Log.v(LOG_TAG, "In onCreateLoader");
 		Intent intent = getActivity().getIntent();
-		if (intent == null) {
-			return null;
+		CursorLoader cursorLoader = null;
+		if (intent != null && intent.getData() != null) {
+			/* Now create and return a CursorLoader that will take care of creating a Cursor for the data being displayed. */
+			Uri uriDetail = intent.getData();
+			cursorLoader = new CursorLoader(getActivity(), uriDetail, FORECAST_COLUMNS, null, null, null);
 		}
-		/* Now create and return a CursorLoader that will take care of creating a Cursor for the data being displayed. */
-		return new CursorLoader(getActivity(), intent.getData(), FORECAST_COLUMNS, null, null, null);
+		return cursorLoader;
 	}
 
 	@Override

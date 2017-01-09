@@ -14,19 +14,28 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
-	private static final String FORECASTFRAGMENT_TAG = "FORECASTFRAGMENT_TAG";
+//	private static final String FORECASTFRAGMENT_TAG = "FORECASTFRAGMENT_TAG";
+	private static final String DETAILFRAGMENT_TAG = "DETAILFRAGMENT_TAG";
 	public String mLocation;
+	private boolean mTwoPane;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(LOG_TAG, "onCreate.....");
 		super.onCreate(savedInstanceState);
+		mLocation = Utility.getPreferredLocation(this);
 		setContentView(R.layout.activity_main);
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		mLocation = sharedPreferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
-		if (savedInstanceState == null) {
-			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG);
-			fragmentTransaction.commit();
+		Log.d(LOG_TAG, "onCreate..... " + (findViewById(R.id.weather_detail_container)!=null));
+		if (findViewById(R.id.weather_detail_container)!=null) {
+			/* The detailed container view will be present only in large screen layouts (res/layout-ws600dp). */
+			mTwoPane = true;
+			if (savedInstanceState!=null) {
+				FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG);
+				fragmentTransaction.commit();
+			}
+		} else {
+			mTwoPane = false;
 		}
 	}
 
@@ -67,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		if (mLocation!=null && !mLocation.equals(Utility.getPreferredLocation(this))) {
-			ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+			ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
 			if (forecastFragment!=null) {
 				forecastFragment.onLocationChanged();
 			}
