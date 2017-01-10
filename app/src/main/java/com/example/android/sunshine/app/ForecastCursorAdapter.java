@@ -69,7 +69,11 @@ public class ForecastCursorAdapter extends CursorAdapter {
 		viewHolder.lowTempView.setText(minTempStr);
 
 		long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-		viewHolder.dateView.setText(Utility.getFriendlyDayString(context, date));
+		String dateStr = Utility.getFriendlyDayString(context, date);
+		if (VIEW_TYPE_TODAY==itemViewType) {
+			dateStr += " in " + Utility.getPreferredLocation(context);
+		}
+		viewHolder.dateView.setText(dateStr);
 	}
 
 	@Override

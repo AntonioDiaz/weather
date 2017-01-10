@@ -201,10 +201,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 			JSONObject cityJson = forecastJson.getJSONObject(OWM_CITY);
 			String cityName = cityJson.getString(OWM_CITY_NAME);
 
-			JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
-			double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
-			double cityLongitude = cityCoord.getDouble(OWM_LONGITUDE);
-
+			//JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
+			double cityLatitude = cityJson.getDouble(OWM_LATITUDE);
+			double cityLongitude = cityJson.getDouble(OWM_LONGITUDE);
+			Log.d(LOG_TAG, Double.toString(cityLatitude));
 			long locationId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
 			// Insert the new weather information into the database
@@ -335,6 +335,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 					.appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
 					.build();
 
+			Log.d(LOG_TAG, builtUri.toString());
+
 			URL url = new URL(builtUri.toString());
 
 			// Create the request to OpenWeatherMap, and open the connection
@@ -360,7 +362,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 			if (buffer.length() == 0) {
 				return null;
 			}
-			//Log.d(LOG_TAG, buffer.toString());
+			Log.d(LOG_TAG, buffer.toString());
 			forecastJsonStr = buffer.toString();
 			getWeatherDataFromJson(forecastJsonStr, locationQuery);
 		} catch (IOException e) {

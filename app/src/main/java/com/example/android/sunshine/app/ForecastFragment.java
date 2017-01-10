@@ -76,6 +76,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 			updateWeather();
 			return true;
 		} else if (itemId == R.id.action_location) {
+			String location = Utility.getPreferredLocation(getActivity());
 			Uri gmmIntentUri = Uri.parse("geo:0,0?q=leganes");
 			Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
