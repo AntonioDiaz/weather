@@ -18,6 +18,7 @@ public class ForecastCursorAdapter extends CursorAdapter {
 	private static final String LOG_TAG = ForecastCursorAdapter.class.getSimpleName();
 	private final int VIEW_TYPE_TODAY = 0;
 	private final int VIEW_TYPE_FUTURE_DAY = 1;
+	private boolean mUseTodayLayout = true;
 
 	public ForecastCursorAdapter(Context context, Cursor cursor, int flags) {
 		super(context, cursor, flags);
@@ -78,7 +79,7 @@ public class ForecastCursorAdapter extends CursorAdapter {
 
 	@Override
 	public int getItemViewType(int position) {
-		return (position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY);
+		return ((position == 0 && mUseTodayLayout)? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY);
 	}
 
 	@Override
@@ -102,4 +103,9 @@ public class ForecastCursorAdapter extends CursorAdapter {
 			lowTempView = (TextView)view.findViewById(R.id.list_item_low_textview);
 		}
 	}
+
+	public void setmUseTodayLayout(boolean mUseTodayLayout) {
+		this.mUseTodayLayout = mUseTodayLayout;
+	}
+
 }

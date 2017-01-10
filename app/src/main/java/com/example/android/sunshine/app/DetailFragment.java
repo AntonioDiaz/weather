@@ -57,7 +57,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 	private static final int COL_WEATHER_DEGREES = 7;
 	private static final int COL_WEATHER_PRESSURE = 8;
 	private static final int COL_WEATHER_CONDITION_ID = 9;
-	private TextView mTextViewDate;
+	private TextView mTextViewDay;
+	private TextView mTextViewMonth;
 	private TextView mTextViewHigh;
 	private TextView mTextViewLow;
 	private TextView mTextViewHumidity;
@@ -93,7 +94,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 			mUri = getArguments().getParcelable(DETAIL_URI);
 		}
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-		mTextViewDate = (TextView) rootView.findViewById(R.id.list_item_date_textview);
+		mTextViewDay = (TextView) rootView.findViewById(R.id.list_item_day_textview);
+		mTextViewMonth = (TextView) rootView.findViewById(R.id.list_item_month_textview);
 		mTextViewHigh = (TextView) rootView.findViewById(R.id.list_item_high_textview);
 		mTextViewLow = (TextView) rootView.findViewById(R.id.list_item_low_textview);
 		mTextViewHumidity = (TextView) rootView.findViewById(R.id.list_item_humidity_textview);
@@ -101,6 +103,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 		mTextViewPressure = (TextView) rootView.findViewById(R.id.list_item_pressure_textview);
 		mTestViewForecast = (TextView) rootView.findViewById(R.id.list_item_forecast_textview);
 		mImageView = (ImageView) rootView.findViewById(R.id.list_item_icon);
+		Log.d(LOG_TAG, "mImageView " + mImageView);
 		return rootView;
 	}
 
@@ -138,8 +141,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 			mImageView.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_CONDITION_ID)));
 
 			/* setting date */
-			String dateString = Utility.getFriendlyDayString(getContext(), data.getLong(COL_WEATHER_DATE));
-			mTextViewDate.setText(dateString);
+			String dayStr = Utility.getDayName(getContext(), data.getLong(COL_WEATHER_DATE));
+			mTextViewDay.setText(dayStr);
+
+			String monthStr = Utility.getFormattedMonthDay(getContext(), data.getLong(COL_WEATHER_DATE));
+			mTextViewMonth.setText(monthStr);
 
 			/* setting max temp */
 			String high = Utility.formatTemperature(getContext(), data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);

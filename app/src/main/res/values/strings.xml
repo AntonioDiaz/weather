@@ -8,7 +8,7 @@
     <string name="action_location">Choose Location</string>
     <string name="prueba">prueba</string>
     <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_settings">DetailActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
     <string name="pref_location_label">location</string>
     <string name="pref_location_default">39340</string>
     <string name="pref_location_key">PREF_LOCATION</string>

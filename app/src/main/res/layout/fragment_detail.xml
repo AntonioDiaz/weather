@@ -9,7 +9,13 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/list_item_date_textview"
+            android:id="@+id/list_item_day_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/caraanchoa"/>
+
+        <TextView
+            android:id="@+id/list_item_month_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/caraanchoa"/>

@@ -31,11 +31,41 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 	private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 	public static final int LOADER_ID = 0;
-	private ForecastCursorAdapter forecastCursorAdapter;
+	private ForecastCursorAdapter mForecastCursorAdapter;
 	private Callback mCallback;
+	public static final String LIST_POSITION = "list_position";
+	private int mPosition = ListView.INVALID_POSITION;
+	private ListView mListView;
+	private boolean mUseTodayLayout;
 
 	public ForecastFragment() {
 		Log.d(LOG_TAG, "forecastFragment constructor");
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
+		mForecastCursorAdapter = new ForecastCursorAdapter(getActivity(), null, 0);
+		mForecastCursorAdapter.setmUseTodayLayout(mUseTodayLayout);
+		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+		mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+		mListView.setAdapter(mForecastCursorAdapter);
+		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView adapterView, View view, int position, long l) {
+				/* CursorAdapter returns a cursor at the correct position for getItem(), or null if it cannot seek to that position. */
+				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+				if (cursor != null) {
+					String locationSetting = Utility.getPreferredLocation(getActivity());
+					Uri uriDate = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
+					((Callback)getActivity()).onItemSelected(uriDate);
+				}
+				mPosition = position;
+			}
+		});
+		if (savedInstanceState!=null && savedInstanceState.containsKey(LIST_POSITION)) {
+			mPosition = savedInstanceState.getInt(LIST_POSITION);
+		}
+		return rootView;
 	}
 
 	@Override
@@ -104,25 +134,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d(LOG_TAG, "onCreateView");
-		forecastCursorAdapter = new ForecastCursorAdapter(getActivity(), null, 0);
-		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-		ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView adapterView, View view, int position, long l) {
-				/* CursorAdapter returns a cursor at the correct position for getItem(), or null if it cannot seek to that position. */
-				Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-				if (cursor != null) {
-					String locationSetting = Utility.getPreferredLocation(getActivity());
-					Uri uriDate = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE));
-					((Callback)getActivity()).onItemSelected(uriDate);
-				}
-			}
-		});
-		listView.setAdapter(forecastCursorAdapter);
-		return rootView;
+	public void onSaveInstanceState(Bundle outState) {
+		/* When table rotate, the current position needs to be saved. */
+ 		/* When no item is selected , mPosition will be set to ListView.INVALID_POSITION, so check for that before storing. */
+		if (mPosition != ListView.INVALID_POSITION) {
+			outState.putInt(LIST_POSITION, mPosition);
+		}
+		super.onSaveInstanceState(outState);
 	}
 
 	public void onLocationChanged(){
@@ -140,12 +158,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		forecastCursorAdapter.swapCursor(data);
+		mForecastCursorAdapter.swapCursor(data);
+		if (mPosition != ListView.INVALID_POSITION) {
+			mListView.smoothScrollToPosition(mPosition);
+		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		forecastCursorAdapter.swapCursor(null);
+		mForecastCursorAdapter.swapCursor(null);
 	}
 
 	private static final String[] FORECAST_COLUMNS = {
@@ -176,6 +197,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 	static final int COL_WEATHER_CONDITION_ID = 6;
 	static final int COL_COORD_LAT = 7;
 	static final int COL_COORD_LONG = 8;
+
+	public void setUseTodayLayout(boolean useTodayLayout) {
+		mUseTodayLayout = useTodayLayout;
+		if (mForecastCursorAdapter!=null) {
+			mForecastCursorAdapter.setmUseTodayLayout(mUseTodayLayout);
+		}
+	}
 
 	/**
 	 * A callback interface that all activities containing this fragment must implement.

@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d(LOG_TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		mLocation = Utility.getPreferredLocation(this);
 		setContentView(R.layout.activity_main);
@@ -35,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 		} else {
 			mTwoPane = false;
 		}
+		ForecastFragment forecastFragment = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+		forecastFragment.setUseTodayLayout(!mTwoPane);
 	}
 
 	@Override

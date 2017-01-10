@@ -202,9 +202,15 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 			String cityName = cityJson.getString(OWM_CITY_NAME);
 
 			//JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
-			double cityLatitude = cityJson.getDouble(OWM_LATITUDE);
-			double cityLongitude = cityJson.getDouble(OWM_LONGITUDE);
-			Log.d(LOG_TAG, Double.toString(cityLatitude));
+			double cityLatitude = 0;
+			double cityLongitude = 0;
+			try {
+				cityLatitude = cityJson.getDouble(OWM_LATITUDE);
+				cityLongitude = cityJson.getDouble(OWM_LONGITUDE);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.e(LOG_TAG, e.getMessage());
+			}
 			long locationId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
 			// Insert the new weather information into the database
