@@ -49,6 +49,10 @@ public class ForecastCursorAdapter extends CursorAdapter {
 		/* Read weather icon ID from cursor */
 		int weatherConditionId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
 		int itemViewType = getItemViewType(cursor.getPosition());
+
+		String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
+		viewHolder.descriptionView.setText(description);
+
 		int iconId;
 		if (VIEW_TYPE_TODAY == itemViewType){
 			iconId = Utility.getArtResourceForWeatherCondition(weatherConditionId);
@@ -56,9 +60,7 @@ public class ForecastCursorAdapter extends CursorAdapter {
 			iconId = Utility.getIconResourceForWeatherCondition(weatherConditionId);
 		}
 		viewHolder.iconView.setImageResource(iconId);
-
-		String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
-		viewHolder.descriptionView.setText(description);
+		viewHolder.iconView.setContentDescription(description);
 
 		boolean isMetric = Utility.isMetric(mContext);
 		double maxTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
@@ -71,9 +73,6 @@ public class ForecastCursorAdapter extends CursorAdapter {
 
 		long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
 		String dateStr = Utility.getFriendlyDayString(context, date);
-		if (VIEW_TYPE_TODAY==itemViewType) {
-			dateStr += " in " + Utility.getPreferredLocation(context);
-		}
 		viewHolder.dateView.setText(dateStr);
 	}
 
